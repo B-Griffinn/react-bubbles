@@ -6,10 +6,8 @@ class Login extends React.Component {
 
     //set default state with empty creds obj
     state = {
-        credentials:[ {
             username: '',
             password:''
-        }]
     };
 
     // Handlers below
@@ -18,19 +16,20 @@ class Login extends React.Component {
     handleChange = e => {
         console.log(e.target.value)
         this.setState({
-          credentials: {
-            ...this.state.credentials,
+          
+            ...this.state,
             [e.target.name]: e.target.value
-          }
+          
         });
       };
 
     // Login function that will prevent default, run our axiosWithAuth fn, post that auth and promise a redirect ***
     login = e => {
         e.preventDefault();
+        console.log('here is login state', this.state)
         // axiosWithAuth ==> ?? an axios instance; .post() ==> ?? promise
         axiosWithAuth()
-          .post('/api/login', this.state.credentials)
+          .post('/api/login', this.state)
           .then(res => {
               // save the returned token to localStorage ***
             localStorage.setItem('token', res.data.payload);
@@ -47,14 +46,14 @@ class Login extends React.Component {
                 <input
                     type="text"
                     name="username"
-                    value={this.state.credentials.username}
+                    value={this.state.username}
                     onChange={this.handleChange}
                     placeholder="Email"
                 />
                 <input
                     type="password"
                     name="password"
-                    value={this.state.credentials.password}
+                    value={this.state.password}
                     onChange={this.handleChange}
                     placeholder="Password"
                 />
@@ -62,9 +61,9 @@ class Login extends React.Component {
                 <p>
                   Login Credentials
                   <br/>
-                  <span>Username: Username</span>
+                  <span>Username: username</span>
                   <br/>
-                  <span>Password: Password</span>
+                  <span>Password: password</span>
                   <br/>
                 </p>
             </form>
