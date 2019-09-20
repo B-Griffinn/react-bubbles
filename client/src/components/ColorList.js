@@ -43,10 +43,13 @@ const ColorList = ({ colors, updateColors }) => {
   };
 
   const deleteColor = color => {
+
 // create a new arr and test the color the user attempts to delete
 console.log('THIS COLOR WAS DELETED', color)
+
     updateColors(colors.filter(item => item.id !== color.id));
     // if item.id === color.id we would delete everything BUT the selected delete button
+    // forEach interferes with .map() on line 62
 
     axiosWithAuth()
       .delete(`http://localhost:5000/api/colors/${color.id}`)
