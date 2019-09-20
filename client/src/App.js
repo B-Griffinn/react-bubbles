@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+// Components 
 import Login from "./components/Login";
+import BubblePage from './components/BubblePage';
+import PrivateRoute from './components/PrivateRoute';
+
 import "./styles.scss";
 
 function App() {
