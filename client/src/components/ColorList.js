@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialColor = {
   color: "",
@@ -7,7 +7,7 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+  // console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -18,13 +18,42 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
+    console.log('What is colorToEdit at this moment? ', colorToEdit);
     // Make a put request to save your updated color
     // think about where will you get the id from...
-    // where is is saved right now?
+    // where is id saved right now? *** id is saved in BubblePage as state and is being passed down as props
+
+    // updateColors is a setStae fn being passed in from BubblePage
+      // map through that colors arr of object that is also passed in from BubblePage
+    updateColors(
+      colors.map(color => {
+        if (color.id === colorToEdit.id) {
+          return colorToEdit;
+        } else {
+          return color;
+        }
+      })
+    );
+    axiosWithAuth()
+      .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
+      .then(res => {
+        console.log("The edited color is: ", res);
+      })
+      .catch(err => console.log(err.response));
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+// create a new arr and test the color the user attempts to delete
+console.log('THIS COLOR WAS DELETED', color)
+    updateColors(colors.filter(item => item.id !== color.id));
+    // if item.id === color.id we would delete everything BUT the selected delete button
+
+    axiosWithAuth()
+      .delete(`http://localhost:5000/api/colors/${color.id}`)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err.response));
   };
 
   return (
@@ -34,9 +63,9 @@ const ColorList = ({ colors, updateColors }) => {
         {colors.map(color => (
           <li key={color.color} onClick={() => editColor(color)}>
             <span>
-              <span className="delete" onClick={() => deleteColor(color)}>
-                x
-              </span>{" "}
+              <button className="delete" onClick={() => deleteColor(color)}>
+                Delete
+              </button>{" "}
               {color.color}
             </span>
             <div

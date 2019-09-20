@@ -26,7 +26,7 @@ class Login extends React.Component {
     // Login function that will prevent default, run our axiosWithAuth fn, post that auth and promise a redirect ***
     login = e => {
         e.preventDefault();
-        console.log('here is login state', this.state)
+        console.log('LOGIN STATE CREDS', this.state)
         // axiosWithAuth ==> ?? an axios instance; .post() ==> ?? promise
         axiosWithAuth()
           .post('/api/login', this.state)
