@@ -18,6 +18,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         render={() => {
           if(localStorage.getItem('token')) { 
           // if token is in localStorage > render the given component
+          // Display BubblePage aka deconstructed component
             return <Component />
           } else {
             // anytime this is rendered to the DOM is takes us to the provided `to` 

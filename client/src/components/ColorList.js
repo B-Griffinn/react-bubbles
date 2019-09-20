@@ -59,11 +59,30 @@ console.log('THIS COLOR WAS DELETED', color)
       .catch(err => console.log(err.response));
   };
 
+  const deleteAll = color => {
+
+    // create a new arr and test the color the user attempts to delete
+    console.log('THIS COLOR WAS DELETED', color)
+    
+        updateColors(colors.filter(item => item.id === color.id));
+        // if item.id === color.id we would delete everything BUT the selected delete button
+        // forEach interferes with .map() on line 62
+    
+        axiosWithAuth()
+          .delete(`http://localhost:5000/api/colors/${color.id}`)
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => console.log(err.response));
+      };
+
   return (
     <div className="colors-wrap">
+      <button onClick={() => deleteAll(colors)}>Delete All</button>
       <p>colors</p>
       <ul>
         {colors.map(color => (
+        
           <li key={color.color} onClick={() => editColor(color)}>
             <span>
               <button className="delete" onClick={() => deleteColor(color)}>
